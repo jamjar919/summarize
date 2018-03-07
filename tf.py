@@ -1,7 +1,3 @@
-# Tf stuff 
-from sklearn.feature_extraction.text import CountVectorizer
-
-# Other external libs
 import numpy as np
 
 # From common

@@ -1,7 +1,3 @@
-# Tf stuff 
-from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
-
-# Other external libs
 import numpy as np
 
 from tf import calculateTermFrequency
