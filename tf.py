@@ -5,10 +5,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
 
 # From common
-from common import loadArticle, splitSentences, preprocess, calculateSentenceWeight, summarize, numWords
-
-# CONSTANTS
-SUMMARY_LENGTH = 100
+from common import preprocess, calculateSentenceWeight
 
 def calculateTermFrequency(corpus, max_features=None, ngrams=1, vocabulary=None):
     '''
@@ -46,15 +43,3 @@ def tf(text):
     weightArray.reverse()
     return weightArray
 
-for i in range(1, 9):
-    original = loadArticle(i)
-    summary = summarize(original, tf, length=SUMMARY_LENGTH)
-
-    print()
-    print('Article', i)
-    print(original.replace("\n", " "))
-    print()
-    print('Summary:')
-    print(summary)
-    print(numWords(summary), 'words')
-    print()
