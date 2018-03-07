@@ -1,5 +1,4 @@
 from nltk.corpus import stopwords
-from keras.preprocessing.text import text_to_word_sequence
 from functools import reduce
 import os 
 
@@ -9,6 +8,7 @@ DATE_STRING_LIST = [
     "jan", "january", "feb", "febuary", "mar", "march", "apr", "april", "jun", "june", "jul", "july", "aug", "august", "sep", "september",
     "oct", "october", "nov", "november", "dec", "december"
 ]
+CHARS_TO_STRIP = ["!","\"","#","$","%","&","(",")","*","+",",","-",".","/",":",";","<","=",">","?","@","[","\\","]","^,","_","`","{","|","}","~","\t","\n"]
 FILE_ROOT_PATH = loc+'/files'
 
 
@@ -24,6 +24,25 @@ def splitSentences(text):
     sentences = list(filter(len, sentences))
     return sentences
 
+def splitWords(text):
+    text = text.strip()
+    text = text.lower()
+    stripped = ""
+    for c in text:
+        if not c in CHARS_TO_STRIP:
+            stripped += c
+
+    stripped = stripped.split(" ")
+    for i in range(0, len(stripped)):
+        hasAp = stripped[i].find("'")
+        if hasAp != -1:
+            stripped[i] = stripped[i][0:hasAp] 
+    
+    while '' in stripped:
+        stripped.remove('')
+
+    return stripped
+
 def preprocess(text):
     # Split to sentences
     sentences = splitSentences(text)
@@ -32,7 +51,7 @@ def preprocess(text):
     
     # Remove stops
     for i in range(0, len(sentences)):
-        sentences[i] = text_to_word_sequence(sentences[i])
+        sentences[i] = splitWords(sentences[i])
         sentences[i] = [w for w in sentences[i] if not w in stops]
         sentences[i] = " ".join(sentences[i])
 
@@ -44,7 +63,7 @@ def preprocess(text):
 
 def calculateSentenceWeight(sentence, frequency, terms):
     # Split into array
-    sentence = text_to_word_sequence(sentence)
+    sentence = splitWords(sentence)
 
     # Calculate weights
     weight = 0

@@ -5,23 +5,29 @@ from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
 
 # From common
-from common import preprocess, calculateSentenceWeight
+from common import preprocess, calculateSentenceWeight, splitWords
 
-def calculateTermFrequency(corpus, max_features=None, ngrams=1, vocabulary=None):
-    '''
-    Returns a list of terms and their count given a list of strings
-    '''
-    vectorizer = CountVectorizer(
-        analyzer = "word",
-        tokenizer = None,
-        preprocessor = None,
-        stop_words = None,
-        max_features = max_features,
-        ngram_range=(ngrams,ngrams),
-        vocabulary=vocabulary
-    )
-    features = vectorizer.fit_transform(corpus)
-    return (features.toarray(), vectorizer.get_feature_names())
+def calculateTermFrequency(corpus):
+    features = []
+    # Extract feature list
+    for document in corpus:
+        d = splitWords(document)
+        for word in d:
+            if len(word) > 0:
+                if not word in features:
+                    features.append(word)
+    features.sort()
+
+    result = np.zeros((len(corpus), len(features)), dtype=int)
+    # Count
+    for i in range(0, len(corpus)):
+        document = corpus[i]
+        d = splitWords(document)
+        for word in d:
+            index = features.index(word)
+            result[i][index] = result[i][index] + 1
+
+    return result, features
 
 def tf(text):
     article = preprocess(text)
