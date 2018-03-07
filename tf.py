@@ -15,7 +15,7 @@ def calculateTermFrequency(corpus):
     features.sort()
 
     result = np.zeros((len(corpus), len(features)))
-    # Count
+    # Count number of occurences of each word
     for i in range(0, len(corpus)):
         document = corpus[i]
         d = splitWords(document)

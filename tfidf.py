@@ -5,15 +5,18 @@ from common import preprocess, calculateSentenceWeight
 
 def transformFrequencyTdidf(frequency):
     numDocs = frequency.shape[0]
+
+    # Count num of times documents contain the word by dtyping to bool
     docContainsWord = frequency
     for i in range(0, numDocs):
         docContainsWord[i] = docContainsWord[i].astype(bool)
     docFrequency = np.sum(docContainsWord, axis=0)
+
     for i in range(0, numDocs):
         for j in range(0, frequency.shape[1]):
             # Calculate our IDF score for this word
             idf = np.log10(numDocs/(1 + docFrequency[j]))
-            # Reassign the frequency
+            # Reassign
             frequency[i][j] = frequency[i][j] * idf
     return frequency
 

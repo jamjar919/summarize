@@ -1,7 +1,4 @@
 from functools import reduce
-import os 
-
-loc = os.path.dirname(os.path.realpath(__file__))
 
 DATE_STRING_LIST = [
     "jan", "january", "feb", "febuary", "mar", "march", "apr", "april", "jun", "june", "jul", "july", "aug", "august", "sep", "september",
@@ -9,7 +6,6 @@ DATE_STRING_LIST = [
 ]
 CHARS_TO_STRIP = ["!","\"","#","$","%","&","(",")","*","+",",","-",".","/",":",";","<","=",">","?","@","[","\\","]","^,","_","`","{","|","}",
     "~","\t","\n"]
-FILE_ROOT_PATH = loc+'/files'
 STOPWORDS = {'at', 'doesn', 'whom', 'had', 'those', 'few', 'me', 'each', 'their', 'him', 'some', 'the', 'that', "she's", 'being', 'through',
     'both', 'can', 'were', 'with', 'by', 'down', 'into', 'why', 'you', 'weren', 'where', 'then', 'he', 'between', 'mustn', 'until', "wouldn't",
     'further', 'yourselves', "mightn't", 'theirs', 'there', 'and', 'again', 'not', "shouldn't", 'here', 'in', 'd', 'during', 'does', 'more',
@@ -22,8 +18,8 @@ STOPWORDS = {'at', 'doesn', 'whom', 'had', 'those', 'few', 'me', 'each', 'their'
     'are', 'off', 'no', 'wasn', "couldn't", "doesn't", "weren't", 'y', 'what', 'against', 'm', 'yourself', 'aren', "shan't", 'herself', 'she',
     'did', 'don', 'didn', 'an', 'most', "it's", 'so', 'have', 'your', 'hadn', 'while', 'before'}
 
-def loadArticle(id):
-    a = open(FILE_ROOT_PATH+'/Doc '+str(id)+".txt", 'r', encoding='utf8');
+def loadArticle(id, path):
+    a = open(path+'/Doc '+str(id)+".txt", 'r', encoding='utf8');
     return a.read()+ ' '
 
 def splitSentences(text):
