@@ -19,7 +19,10 @@ def loadArticle(id):
 def splitSentences(text):
     text = text.replace("\n", " ")
     text = text.replace("\"", "")
-    return text.split('. ')
+    sentences = text.split(". ")
+    # Remove empty values
+    sentences = list(filter(len, sentences))
+    return sentences
 
 def preprocess(text):
     # Split to sentences
@@ -70,7 +73,11 @@ def calculateSentenceWeight(sentence, frequency, terms):
     # Normalise by sentence size
     return weight/len(sentence)
 
-def summarize(original, weightFunction, length=500):
+def numWords(text):
+    '''Count the number of words in some text'''
+    return len(text.split(" "))
+
+def summarize(original, weightFunction, length=100):
     # Init weights and sentences
     weights = weightFunction(original)
     sentences = splitSentences(original)
@@ -78,7 +85,8 @@ def summarize(original, weightFunction, length=500):
     # Build our summary
     summarySentences = [] 
     while(
-        reduce(lambda a, b: a + len(b[1]), summarySentences, 0) + len(sentences[weights[0][0]]) < length
+        (len(sentences) > 1) and
+        (reduce(lambda a, b: a + numWords(b[1]), summarySentences, 0) + numWords(sentences[weights[0][0]]) < length)
     ):
         # Pick the highest weight sentence from the article
         summarySentences.append((
@@ -90,19 +98,22 @@ def summarize(original, weightFunction, length=500):
         sentences.pop(weights[0][0])
 
         # Regenerate article
-        article = ". ".join(sentences)
-        weights = weightFunction(article)
-        sentences = splitSentences(article)
+        if (len(sentences) > 1):
+            article = ". ".join(sentences)
+            weights = weightFunction(article)
+            sentences = splitSentences(article)
 
     # Fill any more unused space
     i = 0
     while(
-        reduce(lambda a, b: a + len(b[1]), summarySentences, 0) + len(sentences[weights[i][0]]) < length
+        (len(sentences) > 1) and
+        reduce(lambda a, b: a + numWords(b[1]), summarySentences, 0) + numWords(sentences[weights[i][0]]) < length
     ):
         summarySentences.append((
             weights[0][0],
             sentences[weights[0][0]]
         ))
+        i += 1
 
     # Sort sentences by the position they appeared in the document
     summarySentences.sort(
