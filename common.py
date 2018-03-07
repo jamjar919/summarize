@@ -1,4 +1,3 @@
-from nltk.corpus import stopwords
 from functools import reduce
 import os 
 
@@ -8,9 +7,20 @@ DATE_STRING_LIST = [
     "jan", "january", "feb", "febuary", "mar", "march", "apr", "april", "jun", "june", "jul", "july", "aug", "august", "sep", "september",
     "oct", "october", "nov", "november", "dec", "december"
 ]
-CHARS_TO_STRIP = ["!","\"","#","$","%","&","(",")","*","+",",","-",".","/",":",";","<","=",">","?","@","[","\\","]","^,","_","`","{","|","}","~","\t","\n"]
+CHARS_TO_STRIP = ["!","\"","#","$","%","&","(",")","*","+",",","-",".","/",":",";","<","=",">","?","@","[","\\","]","^,","_","`","{","|","}",
+    "~","\t","\n"]
 FILE_ROOT_PATH = loc+'/files'
-
+STOPWORDS = {'at', 'doesn', 'whom', 'had', 'those', 'few', 'me', 'each', 'their', 'him', 'some', 'the', 'that', "she's", 'being', 'through',
+    'both', 'can', 'were', 'with', 'by', 'down', 'into', 'why', 'you', 'weren', 'where', 'then', 'he', 'between', 'mustn', 'until', "wouldn't",
+    'further', 'yourselves', "mightn't", 'theirs', 'there', 'and', 'again', 'not', "shouldn't", 'here', 'in', 'd', 'during', 'does', 'more',
+    'couldn', 't', 'haven', 'shouldn', 'its', 'too', 'myself', 'after', 'this', 'of', "needn't", 'about', 'o', "that'll", "won't", 'because',
+    'themselves', 'them', 'ourselves', 'these', 'but', 'wouldn', 'ain', 'been', 'than', 'to', 'or', "you'll", 'should', 'hers', 'needn', 'll',
+    'now', 'doing', 'yours', 'which', 'mightn', "hadn't", "you're", 'my', 'only', 'same', 'is', 'do', 're', 'his', 'ma', 'all', 'having', 'as',
+    'when', "wasn't", 'nor', 'her', "isn't", 'has', "you'd", 'isn', 'they', 'such', 'ours', 'how', 'itself', 'be', 'for', 'out', 'it', 'from',
+    'on', 'shan', 'won', 'will', 'our', 'up', 'below', 'was', "didn't", 'above', 'very', "aren't", 'once', 'a', 'i', 'himself', "you've", 'who',
+    "mustn't", "should've", "don't", 'am', 'other', 'any', 'own', "hasn't", 'over', 'we', 'if', 's', "haven't", 've', 'under', 'just', 'hasn',
+    'are', 'off', 'no', 'wasn', "couldn't", "doesn't", "weren't", 'y', 'what', 'against', 'm', 'yourself', 'aren', "shan't", 'herself', 'she',
+    'did', 'don', 'didn', 'an', 'most', "it's", 'so', 'have', 'your', 'hadn', 'while', 'before'}
 
 def loadArticle(id):
     a = open(FILE_ROOT_PATH+'/Doc '+str(id)+".txt", 'r', encoding='utf8');
@@ -47,7 +57,7 @@ def preprocess(text):
     # Split to sentences
     sentences = splitSentences(text)
     
-    stops = set(stopwords.words("english"))
+    stops = STOPWORDS
     
     # Remove stops
     for i in range(0, len(sentences)):

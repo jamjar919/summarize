@@ -14,7 +14,7 @@ def calculateTermFrequency(corpus):
                     features.append(word)
     features.sort()
 
-    result = np.zeros((len(corpus), len(features)), dtype=int)
+    result = np.zeros((len(corpus), len(features)))
     # Count
     for i in range(0, len(corpus)):
         document = corpus[i]
