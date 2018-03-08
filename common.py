@@ -96,6 +96,8 @@ def calculateSentenceWeight(sentence, frequency, terms):
             pass
     
     # Normalise by sentence size
+    if len(sentence) < 4:
+        return 0
     return weight/len(sentence)
 
 def numWords(text):
