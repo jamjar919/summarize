@@ -43,8 +43,8 @@ def main():
             text += original + ' '
         summary = summarize(text, func, length=SUMMARY_LENGTH)
         print()
-        print('Articles')
-        print(original.replace("\n", " "))
+        print('Text')
+        print(text.replace("\n", " "))
         print()
         print('Summary:')
         print(summary)
